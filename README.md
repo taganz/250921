@@ -1,8 +1,15 @@
-# Dynamic Color Circles with Intelligent Camera Movement
+# 250921 #
 
-A generative art project built with p5.js that creates an infinite field of colorful circles with noise-based properties and an intelligent camera system that follows descending hue values.
+**Dynamic Color Circles with Intelligent Camera Movement**
+
+A generative art project built with p5.js that creates an infinite field of colorful circles with noise-based properties and a camera system that follows descending hue values.
 
 <img src="circulos-noise.png" alt="Dynamic Color Circles - Example Output" width="400">
+
+
+
+## From this point on, GenIA description....  :-) ##
+
 
 ## Features
 
