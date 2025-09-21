@@ -28,10 +28,13 @@ const paramsDefault1 = {  // rodones grosses
   scaleC: 0.002, 
   sat: 80,  
   hueBase: Math.floor(Math.random()*360), // base hue random
-
-  palette: 'Twilight',
+  hueOffset1: 120, // 120,
+  hueOffset2: -120, // 240,
+  
   seed: 0          
 };
+
+
 
 
 const paramsDefault = paramsDefault1;
@@ -66,26 +69,6 @@ function draw() {
   t += params.tSpeed;
 }
 
-function moveCamera() {
-  // Decidir desplazamiento (+x o +y) y módulo del paso
-  const dirNoise = noise(1000 + t * params.scaleMove);
-  const dirNoise2 = noise(t * params.scaleMove * 5);
-  if (dirNoise < 0.8) camX += params.moveSpeed;
-  if (dirNoise2 < 0.5)
-        camY += params.moveSpeed;
-  else
-        camY -= params.moveSpeed;
-
-  // snap to grid
-  camXsnap = round(camX / params.gridSize) * params.gridSize;
-  camYsnap = round(camY / params.gridSize) * params.gridSize;
-
-  if (!snapToGrid) {
-    camXsnap = camX;
-    camYsnap = camY;
-  }
-
-}
 
 function moveCamera2() {
   // Encontrar la posición del círculo central en pantalla
@@ -172,6 +155,7 @@ function clearCanvas() {
   pop();
   // Si también quieres reiniciar el tiempo/cámara, descomenta:
   // t = 0; camX = 0; camY = 0;
+
 }
 
 function drawCircles() {
@@ -183,19 +167,15 @@ function drawCircles() {
       const wy = y + camYsnap;
 
       // Radio por noise
-      const nr = noise(wx * params.scaleR, wy * params.scaleR, t);
+      const nr = noise(wx * params.scaleR, wy * params.scaleR);
       const r = map(nr, 0, 1, params.rMin, params.rMax);
 
+      // hue rota segons la zona
       const nc = noise(500 + wx * params.scaleC, 500 + wy * params.scaleC);
-      const nHue = map(nc, 0, 1, 0, 360);
-      const nHueRot = noise(500 + wx * 0.0001, 500 + wy * 0.0001) + params.hueBase;
-      const hueRot = map(nHueRot, 0, 1, -60, 60);
-      // Con esto el tono global va rotando lentamente
-      // y el local (nHue) va variando por la posición
-      // final queda en [0,360]
-      const hue = (hueRot + nHue) % 360; 
-      const hue2 = (hueRot + nHue + 120) % 360; 
-      const hue3 = (hueRot + nHue + 240) % 360; 
+      const hueRot = map(nc, 0, 1, 0, 360) + params.hueBase;
+      const hue = (hueRot) % 360; 
+      const hue2 = (hueRot + params.hueOffset1) % 360; 
+      const hue3 = (hueRot + params.hueOffset2) % 360; 
       const sat = params.sat;
       const bri = map(nc, 0, 1, 70, 100);
       const colorType = noise(wx * 0.01, wy * 0.01);
